@@ -3,6 +3,11 @@
 docker build -t biker .
 docker run -p 80:8000 biker
 
+Run tests
+```
+python -m pytest
+```
+
 In case you haven't cleaned up for some time:
 ```
 docker rm $(docker ps -a -q)
