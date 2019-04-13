@@ -1,7 +1,11 @@
 from flask import Flask
+import json
 
-application = Flask(__name__)
+from app import bikes
 
-@application.route("/")
-def get_bikes():
-    return 'bikes', 200
+app = Flask(__name__)
+
+@app.route("/bikes/stdev")
+def get_bikes_stdev():
+	stdev = bikes.stdev()
+	return json.dumps(stdev)
