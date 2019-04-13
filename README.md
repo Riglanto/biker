@@ -1,7 +1,15 @@
 # Biker - the proper take-home interview task
 
+Build and start docker
+```
 docker build -t biker .
 docker run -p 80:8000 biker
+```
+
+Run curl against docker container
+```
+curl localhost/bikes/stdev
+```
 
 Run tests
 ```
