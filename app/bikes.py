@@ -1,14 +1,21 @@
-# # Backend Interview
+import os
+import pandas as pd
+import numpy as np
 
-# We are thrilled you are interviewing with us! The goal of this project is to see how you think, how you prioritize tasks when there is a lot to do and how quickly you can pick up new coding concepts. This project is as much for us as it is for you, we want you to get a sense of what working with us is like. Don't be afraid to ask questions!
+WEEKDAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-# 1. Please download the hour.csv from https://archive.ics.uci.edu/ml/machine-learning-databases/00275/
-
-# 2. Please build an API (Flask/Django) with a Nginx/Gunicorn server in docker
-#    - Build one endpoint where you return the standard deviation in bike rentals (for registered and casual users separately) for every weekday (i.e. Monday, Tuesday, Wednesday, Thursday, Friday) (using parallel processing)
-#    - Please implement best practices TDD/BDD and https://www.python.org/dev/peps/pep-0008/
-
-# 3. Please provide instructions on how the docker can be started and how the API will be accessed.
+def load_data():
+	data_path = os.path.join('data', 'hour.csv')
+	return pd.read_csv(data_path)
 
 def stdev():
-	return {'stdev' : {}}
+	df = load_data()
+
+	daily = df.groupby(['dteday']).agg({'weekday': 'mean', 'casual': 'sum', 'registered': 'sum'})
+
+	weekdays = daily.groupby(['weekday']).std()
+
+	casual = dict(zip(WEEKDAY_NAMES, weekdays['casual'].tolist()))
+	registered = dict(zip(WEEKDAY_NAMES, weekdays['registered'].tolist()))
+
+	return {'stdev': { 'casual': casual, 'registered': registered}}
